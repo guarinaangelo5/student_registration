@@ -17,14 +17,16 @@ class StudentController extends Controller
 
         $students = Student::query()
             ->when($search, function ($query, $search) {
-                $query->where('student_id', 'like', "%{$search}%")
-                    ->orWhere('name', 'like', "%{$search}%")
-                    ->orWhere('first_name', 'like', "%{$search}%")
-                    ->orWhere('middle_name', 'like', "%{$search}%")
-                    ->orWhere('last_name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%")
-                    ->orWhere('course', 'like', "%{$search}%")
-                    ->orWhere('program', 'like', "%{$search}%");
+                $query->where(function ($q) use ($search) {
+                    $q->where('student_id', 'like', "%{$search}%")
+                        ->orWhere('name', 'like', "%{$search}%")
+                        ->orWhere('first_name', 'like', "%{$search}%")
+                        ->orWhere('middle_name', 'like', "%{$search}%")
+                        ->orWhere('last_name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('program', 'like', "%{$search}%")
+                        ->orWhere('year_level', 'like', "%{$search}%");
+                });
             })
             ->latest()
             ->get();
@@ -47,60 +49,34 @@ class StudentController extends Controller
     {
         $validated = $request->validate([
             'student_id' => 'required|string|max:50|unique:students,student_id',
-
             'first_name' => 'required|string|max:100',
-
             'middle_name' => 'nullable|string|max:100',
-
             'last_name' => 'required|string|max:100',
-
             'email' => 'required|email|max:255|unique:students,email',
-
             'mobile_number' => 'required|numeric',
-
             'date_of_birth' => 'required|date',
-
             'gender' => 'required|string|max:50',
-
             'program' => 'required|string|max:255',
-
             'year_level' => 'required|string|max:50',
-
             'address' => 'required|string|max:500',
-
             'profile_picture' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Create Full Name
-        |--------------------------------------------------------------------------
-        */
-
+        // Create full name
         $validated['name'] = trim(
             $validated['first_name'] . ' ' .
             ($validated['middle_name'] ?? '') . ' ' .
             $validated['last_name']
         );
 
-        /*
-        |--------------------------------------------------------------------------
-        | Upload Profile Picture
-        |--------------------------------------------------------------------------
-        */
-
+        // Upload profile picture
         if ($request->hasFile('profile_picture')) {
             $validated['profile_picture'] = $request
                 ->file('profile_picture')
                 ->store('profile-pictures', 'public');
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Save Student
-        |--------------------------------------------------------------------------
-        */
-
+        // Save student
         Student::create($validated);
 
         return redirect()
@@ -131,48 +107,27 @@ class StudentController extends Controller
     {
         $validated = $request->validate([
             'student_id' => 'required|string|max:50|unique:students,student_id,' . $student->id,
-
             'first_name' => 'required|string|max:100',
-
             'middle_name' => 'nullable|string|max:100',
-
             'last_name' => 'required|string|max:100',
-
             'email' => 'required|email|max:255|unique:students,email,' . $student->id,
-
             'mobile_number' => 'required|numeric',
-
             'date_of_birth' => 'required|date',
-
             'gender' => 'required|string|max:50',
-
             'program' => 'required|string|max:255',
-
             'year_level' => 'required|string|max:50',
-
             'address' => 'required|string|max:500',
-
             'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Update Full Name
-        |--------------------------------------------------------------------------
-        */
-
+        // Update full name
         $validated['name'] = trim(
             $validated['first_name'] . ' ' .
             ($validated['middle_name'] ?? '') . ' ' .
             $validated['last_name']
         );
 
-        /*
-        |--------------------------------------------------------------------------
-        | Update Profile Picture
-        |--------------------------------------------------------------------------
-        */
-
+        // Update profile picture if a new one was uploaded
         if ($request->hasFile('profile_picture')) {
 
             // Delete old picture
@@ -189,12 +144,7 @@ class StudentController extends Controller
             unset($validated['profile_picture']);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Update Student
-        |--------------------------------------------------------------------------
-        */
-
+        // Update student
         $student->update($validated);
 
         return redirect()
@@ -207,22 +157,12 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Delete Profile Picture
-        |--------------------------------------------------------------------------
-        */
-
+        // Delete profile picture
         if ($student->profile_picture) {
             Storage::disk('public')->delete($student->profile_picture);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Delete Student
-        |--------------------------------------------------------------------------
-        */
-
+        // Delete student
         $student->delete();
 
         return redirect()
