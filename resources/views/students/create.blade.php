@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Register Student</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
 
     <style>
         :root {
@@ -40,6 +41,8 @@
             margin: auto;
         }
 
+        /* HEADER */
+
         .header-card {
             background: var(--black);
             color: white;
@@ -64,6 +67,8 @@
             margin-bottom: 0;
         }
 
+        /* FORM CARD */
+
         .form-card {
             background: white;
             border-radius: 20px;
@@ -81,6 +86,8 @@
             color: var(--black);
             margin-bottom: 25px;
         }
+
+        /* FORM */
 
         .form-label {
             font-weight: 700;
@@ -103,6 +110,17 @@
             border-color: var(--orange);
             box-shadow: 0 0 0 0.2rem rgba(255, 107, 0, 0.15);
         }
+
+        .form-control.is-invalid,
+        .form-select.is-invalid {
+            border-color: #dc3545;
+        }
+
+        .invalid-feedback {
+            font-weight: 600;
+        }
+
+        /* PROFILE UPLOAD */
 
         .profile-upload {
             background: #fff8f3;
@@ -145,6 +163,8 @@
             margin: auto;
         }
 
+        /* BUTTONS */
+
         .btn-orange {
             background: var(--orange);
             color: white;
@@ -175,10 +195,14 @@
             color: white;
         }
 
+        /* ERROR */
+
         .error-alert {
             border-left: 5px solid #dc3545;
             border-radius: 10px;
         }
+
+        /* FOOTER */
 
         .footer-text {
             color: #999;
@@ -186,6 +210,8 @@
             margin-top: 25px;
             font-size: 13px;
         }
+
+        /* MOBILE */
 
         @media (max-width: 768px) {
             .form-body {
@@ -217,6 +243,7 @@
 <div class="container py-5 main-container">
 
     <!-- HEADER -->
+
     <div class="header-card mb-4">
 
         <h1 class="header-title">
@@ -231,16 +258,18 @@
 
 
     <!-- FORM CARD -->
+
     <div class="form-card">
 
         <div class="form-body">
 
             <!-- VALIDATION ERRORS -->
+
             @if($errors->any())
 
                 <div class="alert alert-danger error-alert">
 
-                    <strong>Please fix the following errors:</strong>
+                    <strong>Please fix the following:</strong>
 
                     <ul class="mb-0 mt-2">
 
@@ -262,55 +291,81 @@
             </h4>
 
 
-            <form action="{{ route('students.store') }}"
-                  method="POST"
-                  enctype="multipart/form-data">
+            <!-- FORM -->
+
+            <form
+                action="{{ route('students.store') }}"
+                method="POST"
+                enctype="multipart/form-data"
+            >
 
                 @csrf
 
 
                 <!-- STUDENT ID -->
+
                 <div class="mb-3">
 
                     <label class="form-label">
-                        Student ID <span class="required">*</span>
+                        Student ID
+                        <span class="required">*</span>
                     </label>
 
                     <input
                         type="text"
                         name="student_id"
-                        class="form-control"
+                        class="form-control @error('student_id') is-invalid @enderror"
                         value="{{ old('student_id') }}"
                         placeholder="e.g. 2026-0001"
                         required
                     >
 
+                    @error('student_id')
+
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+
+                    @enderror
+
                 </div>
 
 
                 <!-- NAME -->
+
                 <div class="row">
 
                     <!-- FIRST NAME -->
+
                     <div class="col-md-4 mb-3">
 
                         <label class="form-label">
-                            First Name <span class="required">*</span>
+                            First Name
+                            <span class="required">*</span>
                         </label>
 
                         <input
                             type="text"
                             name="first_name"
-                            class="form-control"
+                            class="form-control @error('first_name') is-invalid @enderror"
                             value="{{ old('first_name') }}"
                             placeholder="First name"
                             required
                         >
 
+                        @error('first_name')
+
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+
+                        @enderror
+
                     </div>
 
 
                     <!-- MIDDLE NAME -->
+
                     <div class="col-md-4 mb-3">
 
                         <label class="form-label">
@@ -320,29 +375,47 @@
                         <input
                             type="text"
                             name="middle_name"
-                            class="form-control"
+                            class="form-control @error('middle_name') is-invalid @enderror"
                             value="{{ old('middle_name') }}"
                             placeholder="Middle name (optional)"
                         >
+
+                        @error('middle_name')
+
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+
+                        @enderror
 
                     </div>
 
 
                     <!-- LAST NAME -->
+
                     <div class="col-md-4 mb-3">
 
                         <label class="form-label">
-                            Last Name <span class="required">*</span>
+                            Last Name
+                            <span class="required">*</span>
                         </label>
 
                         <input
                             type="text"
                             name="last_name"
-                            class="form-control"
+                            class="form-control @error('last_name') is-invalid @enderror"
                             value="{{ old('last_name') }}"
                             placeholder="Last name"
                             required
                         >
+
+                        @error('last_name')
+
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+
+                        @enderror
 
                     </div>
 
@@ -350,75 +423,108 @@
 
 
                 <!-- EMAIL -->
+
                 <div class="mb-3">
 
                     <label class="form-label">
-                        Email Address <span class="required">*</span>
+                        Email Address
+                        <span class="required">*</span>
                     </label>
 
                     <input
                         type="email"
                         name="email"
-                        class="form-control"
+                        class="form-control @error('email') is-invalid @enderror"
                         value="{{ old('email') }}"
                         placeholder="student@example.com"
                         required
                     >
 
+                    @error('email')
+
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+
+                    @enderror
+
                 </div>
 
 
                 <!-- MOBILE -->
+
                 <div class="mb-3">
 
                     <label class="form-label">
-                        Mobile Number <span class="required">*</span>
+                        Mobile Number
+                        <span class="required">*</span>
                     </label>
 
                     <input
-                        type="text"
+                        type="tel"
                         name="mobile_number"
-                        class="form-control"
+                        class="form-control @error('mobile_number') is-invalid @enderror"
                         value="{{ old('mobile_number') }}"
                         placeholder="e.g. 09123456789"
                         inputmode="numeric"
                         required
                     >
 
+                    @error('mobile_number')
+
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+
+                    @enderror
+
                 </div>
 
 
                 <!-- DATE OF BIRTH + GENDER -->
+
                 <div class="row">
 
                     <!-- DATE OF BIRTH -->
+
                     <div class="col-md-6 mb-3">
 
                         <label class="form-label">
-                            Date of Birth <span class="required">*</span>
+                            Date of Birth
+                            <span class="required">*</span>
                         </label>
 
                         <input
                             type="date"
                             name="date_of_birth"
-                            class="form-control"
+                            class="form-control @error('date_of_birth') is-invalid @enderror"
                             value="{{ old('date_of_birth') }}"
                             required
                         >
+
+                        @error('date_of_birth')
+
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+
+                        @enderror
 
                     </div>
 
 
                     <!-- GENDER -->
+
                     <div class="col-md-6 mb-3">
 
                         <label class="form-label">
-                            Gender <span class="required">*</span>
+                            Gender
+                            <span class="required">*</span>
                         </label>
 
                         <select
                             name="gender"
-                            class="form-select"
+                            class="form-select @error('gender') is-invalid @enderror"
                             required
                         >
 
@@ -426,22 +532,36 @@
                                 Select gender
                             </option>
 
-                            <option value="Male"
-                                {{ old('gender') == 'Male' ? 'selected' : '' }}>
+                            <option
+                                value="Male"
+                                {{ old('gender') == 'Male' ? 'selected' : '' }}
+                            >
                                 Male
                             </option>
 
-                            <option value="Female"
-                                {{ old('gender') == 'Female' ? 'selected' : '' }}>
+                            <option
+                                value="Female"
+                                {{ old('gender') == 'Female' ? 'selected' : '' }}
+                            >
                                 Female
                             </option>
 
-                            <option value="Other"
-                                {{ old('gender') == 'Other' ? 'selected' : '' }}>
+                            <option
+                                value="Other"
+                                {{ old('gender') == 'Other' ? 'selected' : '' }}
+                            >
                                 Other
                             </option>
 
                         </select>
+
+                        @error('gender')
+
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+
+                        @enderror
 
                     </div>
 
@@ -449,34 +569,46 @@
 
 
                 <!-- PROGRAM -->
+
                 <div class="mb-3">
 
                     <label class="form-label">
-                        Program <span class="required">*</span>
+                        Program
+                        <span class="required">*</span>
                     </label>
 
                     <input
                         type="text"
                         name="program"
-                        class="form-control"
+                        class="form-control @error('program') is-invalid @enderror"
                         value="{{ old('program') }}"
                         placeholder="e.g. BS Information Technology"
                         required
                     >
 
+                    @error('program')
+
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+
+                    @enderror
+
                 </div>
 
 
                 <!-- YEAR LEVEL -->
+
                 <div class="mb-3">
 
                     <label class="form-label">
-                        Year Level <span class="required">*</span>
+                        Year Level
+                        <span class="required">*</span>
                     </label>
 
                     <select
                         name="year_level"
-                        class="form-select"
+                        class="form-select @error('year_level') is-invalid @enderror"
                         required
                     >
 
@@ -484,59 +616,88 @@
                             Select year level
                         </option>
 
-                        <option value="1st Year"
-                            {{ old('year_level') == '1st Year' ? 'selected' : '' }}>
+                        <option
+                            value="1st Year"
+                            {{ old('year_level') == '1st Year' ? 'selected' : '' }}
+                        >
                             1st Year
                         </option>
 
-                        <option value="2nd Year"
-                            {{ old('year_level') == '2nd Year' ? 'selected' : '' }}>
+                        <option
+                            value="2nd Year"
+                            {{ old('year_level') == '2nd Year' ? 'selected' : '' }}
+                        >
                             2nd Year
                         </option>
 
-                        <option value="3rd Year"
-                            {{ old('year_level') == '3rd Year' ? 'selected' : '' }}>
+                        <option
+                            value="3rd Year"
+                            {{ old('year_level') == '3rd Year' ? 'selected' : '' }}
+                        >
                             3rd Year
                         </option>
 
-                        <option value="4th Year"
-                            {{ old('year_level') == '4th Year' ? 'selected' : '' }}>
+                        <option
+                            value="4th Year"
+                            {{ old('year_level') == '4th Year' ? 'selected' : '' }}
+                        >
                             4th Year
                         </option>
 
                     </select>
 
+                    @error('year_level')
+
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+
+                    @enderror
+
                 </div>
 
 
                 <!-- ADDRESS -->
+
                 <div class="mb-4">
 
                     <label class="form-label">
-                        Address <span class="required">*</span>
+                        Address
+                        <span class="required">*</span>
                     </label>
 
                     <textarea
                         name="address"
-                        class="form-control"
+                        class="form-control @error('address') is-invalid @enderror"
                         rows="3"
                         placeholder="Enter complete address"
                         required
                     >{{ old('address') }}</textarea>
 
+                    @error('address')
+
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+
+                    @enderror
+
                 </div>
 
 
                 <!-- PROFILE PICTURE -->
+
                 <div class="mb-4">
 
                     <label class="form-label">
-                        Profile Picture <span class="required">*</span>
+                        Profile Picture
+                        <span class="required">*</span>
                     </label>
 
                     <div class="profile-upload">
 
                         <!-- PREVIEW -->
+
                         <div
                             class="profile-preview"
                             id="profilePreview"
@@ -551,10 +712,18 @@
                                 type="file"
                                 name="profile_picture"
                                 id="profilePicture"
-                                class="form-control"
+                                class="form-control @error('profile_picture') is-invalid @enderror"
                                 accept="image/jpeg,image/png,image/webp"
                                 required
                             >
+
+                            @error('profile_picture')
+
+                                <div class="invalid-feedback text-start">
+                                    {{ $message }}
+                                </div>
+
+                            @enderror
 
                         </div>
 
@@ -575,6 +744,7 @@
 
 
                 <!-- BUTTONS -->
+
                 <div class="d-flex justify-content-between align-items-center form-actions">
 
                     <a
@@ -602,9 +772,11 @@
 
 
     <!-- FOOTER -->
+
     <div class="footer-text">
 
         Student Registration System
+
         &copy; {{ date('Y') }}
 
     </div>
@@ -612,7 +784,8 @@
 </div>
 
 
-<!-- IMAGE PREVIEW SCRIPT -->
+<!-- IMAGE PREVIEW -->
+
 <script>
 
     const profilePicture =
@@ -632,7 +805,6 @@
             profilePreview.innerHTML = '👤';
 
             return;
-
         }
 
 
@@ -641,7 +813,6 @@
             profilePreview.innerHTML = '👤';
 
             return;
-
         }
 
 
@@ -651,8 +822,10 @@
         reader.onload = function(e) {
 
             profilePreview.innerHTML =
-                `<img src="${e.target.result}"
-                      alt="Profile Preview">`;
+                `<img
+                    src="${e.target.result}"
+                    alt="Profile Preview"
+                >`;
 
         };
 
@@ -664,6 +837,4 @@
 </script>
 
 </body>
-
 </html>
-
