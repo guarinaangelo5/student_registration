@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Student Profile</title>
+    <title>{{ $student->name }} - Student Profile</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
@@ -40,7 +40,6 @@
             margin: auto;
         }
 
-        /* PROFILE CARD */
         .profile-card {
             background: white;
             border-radius: 22px;
@@ -48,7 +47,6 @@
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
         }
 
-        /* HEADER */
         .profile-header {
             background: var(--black);
             color: white;
@@ -57,7 +55,6 @@
             border-bottom: 6px solid var(--orange);
         }
 
-        /* PROFILE PICTURE */
         .profile-icon {
             width: 130px;
             height: 130px;
@@ -94,7 +91,6 @@
             font-size: 15px;
         }
 
-        /* BODY */
         .profile-body {
             padding: 35px;
         }
@@ -105,7 +101,6 @@
             margin-bottom: 25px;
         }
 
-        /* INFORMATION BOX */
         .info-box {
             background: #f8f8f8;
             border-left: 5px solid var(--orange);
@@ -136,7 +131,6 @@
             word-break: break-word;
         }
 
-        /* STUDENT ID */
         .student-id {
             display: inline-block;
             background: #fff0e6;
@@ -147,7 +141,6 @@
             font-weight: 800;
         }
 
-        /* YEAR BADGE */
         .year-badge {
             display: inline-block;
             background: var(--black);
@@ -157,13 +150,11 @@
             font-weight: 700;
         }
 
-        /* SUCCESS MESSAGE */
         .success-alert {
             border-left: 5px solid #198754;
             border-radius: 10px;
         }
 
-        /* BUTTONS */
         .btn-orange {
             background: var(--orange);
             color: white;
@@ -194,7 +185,6 @@
             color: white;
         }
 
-        /* FOOTER */
         .footer-text {
             color: #999;
             text-align: center;
@@ -202,7 +192,6 @@
             font-size: 13px;
         }
 
-        /* MOBILE */
         @media (max-width: 768px) {
 
             .profile-header {
@@ -238,25 +227,19 @@
         <!-- PROFILE HEADER -->
         <div class="profile-header">
 
-            <!-- PROFILE PICTURE -->
             <div class="profile-icon">
 
                 @if($student->profile_picture)
-
                     <img
                         src="{{ asset('storage/' . $student->profile_picture) }}"
                         alt="{{ $student->name }}"
                     >
-
                 @else
-
                     {{ strtoupper(substr($student->name, 0, 1)) }}
-
                 @endif
 
             </div>
 
-            <!-- STUDENT NAME -->
             <h1 class="profile-name">
                 {{ $student->name }}
             </h1>
@@ -273,14 +256,10 @@
 
             <!-- SUCCESS MESSAGE -->
             @if(session('success'))
-
                 <div class="alert alert-success success-alert mb-4">
-
                     <strong>Success!</strong>
                     {{ session('success') }}
-
                 </div>
-
             @endif
 
 
@@ -293,7 +272,6 @@
 
                 <!-- STUDENT ID -->
                 <div class="col-md-6">
-
                     <div class="info-box">
 
                         <div class="info-label">
@@ -301,21 +279,17 @@
                         </div>
 
                         <div class="info-value">
-
                             <span class="student-id">
                                 {{ $student->student_id }}
                             </span>
-
                         </div>
 
                     </div>
-
                 </div>
 
 
                 <!-- FULL NAME -->
                 <div class="col-md-6">
-
                     <div class="info-box">
 
                         <div class="info-label">
@@ -327,13 +301,11 @@
                         </div>
 
                     </div>
-
                 </div>
 
 
                 <!-- FIRST NAME -->
                 <div class="col-md-6">
-
                     <div class="info-box">
 
                         <div class="info-label">
@@ -345,13 +317,11 @@
                         </div>
 
                     </div>
-
                 </div>
 
 
                 <!-- MIDDLE NAME -->
                 <div class="col-md-6">
-
                     <div class="info-box">
 
                         <div class="info-label">
@@ -359,19 +329,15 @@
                         </div>
 
                         <div class="info-value">
-
                             {{ $student->middle_name ?: 'N/A' }}
-
                         </div>
 
                     </div>
-
                 </div>
 
 
                 <!-- LAST NAME -->
                 <div class="col-md-6">
-
                     <div class="info-box">
 
                         <div class="info-label">
@@ -383,13 +349,11 @@
                         </div>
 
                     </div>
-
                 </div>
 
 
                 <!-- EMAIL -->
                 <div class="col-md-6">
-
                     <div class="info-box">
 
                         <div class="info-label">
@@ -401,13 +365,11 @@
                         </div>
 
                     </div>
-
                 </div>
 
 
                 <!-- MOBILE -->
                 <div class="col-md-6">
-
                     <div class="info-box">
 
                         <div class="info-label">
@@ -419,13 +381,11 @@
                         </div>
 
                     </div>
-
                 </div>
 
 
                 <!-- DATE OF BIRTH -->
                 <div class="col-md-6">
-
                     <div class="info-box">
 
                         <div class="info-label">
@@ -433,22 +393,18 @@
                         </div>
 
                         <div class="info-value">
-
                             {{ $student->date_of_birth
                                 ? \Carbon\Carbon::parse($student->date_of_birth)->format('F d, Y')
                                 : 'N/A'
                             }}
-
                         </div>
 
                     </div>
-
                 </div>
 
 
                 <!-- GENDER -->
                 <div class="col-md-6">
-
                     <div class="info-box">
 
                         <div class="info-label">
@@ -460,33 +416,27 @@
                         </div>
 
                     </div>
-
                 </div>
 
 
-                <!-- COURSE / PROGRAM -->
+                <!-- PROGRAM -->
                 <div class="col-md-6">
-
                     <div class="info-box">
 
                         <div class="info-label">
-                            Course / Program
+                            Program
                         </div>
 
                         <div class="info-value">
-
-                            {{ $student->program ?? $student->course ?? 'N/A' }}
-
+                            {{ $student->program }}
                         </div>
 
                     </div>
-
                 </div>
 
 
                 <!-- YEAR LEVEL -->
                 <div class="col-md-6">
-
                     <div class="info-box">
 
                         <div class="info-label">
@@ -494,21 +444,17 @@
                         </div>
 
                         <div class="info-value">
-
                             <span class="year-badge">
                                 {{ $student->year_level }}
                             </span>
-
                         </div>
 
                     </div>
-
                 </div>
 
 
                 <!-- ADDRESS -->
                 <div class="col-md-6">
-
                     <div class="info-box">
 
                         <div class="info-label">
@@ -520,13 +466,11 @@
                         </div>
 
                     </div>
-
                 </div>
 
 
-                <!-- PROFILE PICTURE PATH -->
+                <!-- PROFILE PICTURE -->
                 <div class="col-md-6">
-
                     <div class="info-box">
 
                         <div class="info-label">
@@ -552,13 +496,11 @@
                         </div>
 
                     </div>
-
                 </div>
 
 
                 <!-- REGISTERED DATE -->
                 <div class="col-md-6">
-
                     <div class="info-box">
 
                         <div class="info-label">
@@ -566,22 +508,18 @@
                         </div>
 
                         <div class="info-value">
-
                             {{ $student->created_at
                                 ? $student->created_at->format('F d, Y')
                                 : 'N/A'
                             }}
-
                         </div>
 
                     </div>
-
                 </div>
 
 
                 <!-- LAST UPDATED -->
                 <div class="col-md-6">
-
                     <div class="info-box">
 
                         <div class="info-label">
@@ -589,16 +527,13 @@
                         </div>
 
                         <div class="info-value">
-
                             {{ $student->updated_at
                                 ? $student->updated_at->format('F d, Y h:i A')
                                 : 'N/A'
                             }}
-
                         </div>
 
                     </div>
-
                 </div>
 
             </div>
@@ -613,7 +548,6 @@
                 >
                     ← Back to Students
                 </a>
-
 
                 <a
                     href="{{ route('students.edit', $student) }}"
@@ -631,10 +565,8 @@
 
     <!-- FOOTER -->
     <div class="footer-text">
-
         Student Registration System
         &copy; {{ date('Y') }}
-
     </div>
 
 </div>
@@ -642,4 +574,3 @@
 </body>
 
 </html>
-
