@@ -24,8 +24,7 @@ class StudentController extends Controller
                         ->orWhere('middle_name', 'like', "%{$search}%")
                         ->orWhere('last_name', 'like', "%{$search}%")
                         ->orWhere('email', 'like', "%{$search}%")
-                        ->orWhere('program', 'like', "%{$search}%")
-                        ->orWhere('year_level', 'like', "%{$search}%");
+                        ->orWhere('program', 'like', "%{$search}%");
                 });
             })
             ->latest()
@@ -49,34 +48,60 @@ class StudentController extends Controller
     {
         $validated = $request->validate([
             'student_id' => 'required|string|max:50|unique:students,student_id',
+
             'first_name' => 'required|string|max:100',
+
             'middle_name' => 'nullable|string|max:100',
+
             'last_name' => 'required|string|max:100',
+
             'email' => 'required|email|max:255|unique:students,email',
+
             'mobile_number' => 'required|numeric',
+
             'date_of_birth' => 'required|date',
+
             'gender' => 'required|string|max:50',
+
             'program' => 'required|string|max:255',
+
             'year_level' => 'required|string|max:50',
+
             'address' => 'required|string|max:500',
+
             'profile_picture' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        // Create full name
+        /*
+        |--------------------------------------------------------------------------
+        | Create Full Name
+        |--------------------------------------------------------------------------
+        */
+
         $validated['name'] = trim(
             $validated['first_name'] . ' ' .
             ($validated['middle_name'] ?? '') . ' ' .
             $validated['last_name']
         );
 
-        // Upload profile picture
+        /*
+        |--------------------------------------------------------------------------
+        | Upload Profile Picture
+        |--------------------------------------------------------------------------
+        */
+
         if ($request->hasFile('profile_picture')) {
             $validated['profile_picture'] = $request
                 ->file('profile_picture')
                 ->store('profile-pictures', 'public');
         }
 
-        // Save student
+        /*
+        |--------------------------------------------------------------------------
+        | Save Student
+        |--------------------------------------------------------------------------
+        */
+
         Student::create($validated);
 
         return redirect()
@@ -107,27 +132,48 @@ class StudentController extends Controller
     {
         $validated = $request->validate([
             'student_id' => 'required|string|max:50|unique:students,student_id,' . $student->id,
+
             'first_name' => 'required|string|max:100',
+
             'middle_name' => 'nullable|string|max:100',
+
             'last_name' => 'required|string|max:100',
+
             'email' => 'required|email|max:255|unique:students,email,' . $student->id,
+
             'mobile_number' => 'required|numeric',
+
             'date_of_birth' => 'required|date',
+
             'gender' => 'required|string|max:50',
+
             'program' => 'required|string|max:255',
+
             'year_level' => 'required|string|max:50',
+
             'address' => 'required|string|max:500',
+
             'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        // Update full name
+        /*
+        |--------------------------------------------------------------------------
+        | Update Full Name
+        |--------------------------------------------------------------------------
+        */
+
         $validated['name'] = trim(
             $validated['first_name'] . ' ' .
             ($validated['middle_name'] ?? '') . ' ' .
             $validated['last_name']
         );
 
-        // Update profile picture if a new one was uploaded
+        /*
+        |--------------------------------------------------------------------------
+        | Update Profile Picture
+        |--------------------------------------------------------------------------
+        */
+
         if ($request->hasFile('profile_picture')) {
 
             // Delete old picture
@@ -139,12 +185,18 @@ class StudentController extends Controller
             $validated['profile_picture'] = $request
                 ->file('profile_picture')
                 ->store('profile-pictures', 'public');
+
         } else {
             // Keep existing profile picture
             unset($validated['profile_picture']);
         }
 
-        // Update student
+        /*
+        |--------------------------------------------------------------------------
+        | Update Student
+        |--------------------------------------------------------------------------
+        */
+
         $student->update($validated);
 
         return redirect()
@@ -157,12 +209,22 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
-        // Delete profile picture
+        /*
+        |--------------------------------------------------------------------------
+        | Delete Profile Picture
+        |--------------------------------------------------------------------------
+        */
+
         if ($student->profile_picture) {
             Storage::disk('public')->delete($student->profile_picture);
         }
 
-        // Delete student
+        /*
+        |--------------------------------------------------------------------------
+        | Delete Student
+        |--------------------------------------------------------------------------
+        */
+
         $student->delete();
 
         return redirect()
